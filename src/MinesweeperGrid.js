@@ -23,7 +23,7 @@ const MinesweeperGrid = ({ grid }) => {
 
     if (grid[rowIndex][columnIndex] === '*') {
       // Clicked on a bomb, reveal all cells
-      const updatedCellStates = cellStates.map((row) => row.map((cell) => cell));
+      const updatedCellStates = grid.map((row) => row.map((cell) => cell));
       setCellStates(updatedCellStates);
       setGameStatus('lost');
       return;

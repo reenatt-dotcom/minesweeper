@@ -24,11 +24,7 @@ const App = () => {
   return (
     <div className="app">
       <h1>Minesweeper Grid</h1>
-      <MinesweeperGrid grid={grid} />
-      <span>Open a tile: left-click on a tile</span>
-      <br></br>
-
-<span>Flag a tile: right-click on a tile</span>
+      <MinesweeperGrid grid={grid} resetGame={resetGame} />
     </div>
   );
 };
