@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1>Minesweeper Grid</h1>
+      <h1>Minesweeper</h1>
       <MinesweeperGrid grid={grid} resetGame={resetGame} />
     </div>
   );
