@@ -9,12 +9,21 @@ const MinesweeperGrid = ({ grid }) => {
   );
   const [gameStatus, setGameStatus] = useState('playing');
 
+  const initializeGrid = () => {
+    setCellStates(
+      Array(grid.length)
+        .fill(0)
+        .map(() => Array(grid[0].length).fill('hidden'))
+    );
+    setGameStatus('playing');
+  };
+
   const handleClick = (rowIndex, columnIndex) => {
     if (gameStatus !== 'playing' || cellStates[rowIndex][columnIndex] === 'flagged') return;
 
     if (grid[rowIndex][columnIndex] === '*') {
       // Clicked on a bomb, reveal all cells
-      const updatedCellStates = grid.map((row) => row.map((cell) => cell));
+      const updatedCellStates = cellStates.map((row) => row.map((cell) => cell));
       setCellStates(updatedCellStates);
       setGameStatus('lost');
       return;
@@ -101,6 +110,11 @@ const MinesweeperGrid = ({ grid }) => {
           ))}
         </div>
       ))}
+      <div>
+        <button className="reset-button" onClick={initializeGrid}>
+          Reset Game
+        </button>
+      </div>
       {gameStatus === 'lost' && (
         <div>
           <p className="game-status">You lost!</p>
