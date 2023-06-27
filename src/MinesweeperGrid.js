@@ -5,12 +5,12 @@ const MinesweeperGrid = ({ grid }) => {
   const [cellStates, setCellStates] = useState(
     Array(grid.length)
       .fill(0)
-      .map(() => Array(grid[0].length).fill('-'))
+      .map(() => Array(grid[0].length).fill('hidden'))
   );
   const [gameStatus, setGameStatus] = useState('playing');
 
   const handleClick = (rowIndex, columnIndex) => {
-    if (gameStatus !== 'playing' || cellStates[rowIndex][columnIndex] === '🚩') return;
+    if (gameStatus !== 'playing' || cellStates[rowIndex][columnIndex] === 'flagged') return;
 
     const updatedCellStates = [...cellStates];
 
@@ -19,10 +19,10 @@ const MinesweeperGrid = ({ grid }) => {
         return;
       }
 
-      if (updatedCellStates[row][col] === '-') {
+      if (updatedCellStates[row][col] === 'hidden') {
         updatedCellStates[row][col] = grid[row][col];
 
-        if (grid[row][col] === ' ') {
+        if (grid[row][col] === '-' || grid[row][col] === ' ') {
           revealAdjacentCells(row - 1, col); // Up
           revealAdjacentCells(row + 1, col); // Down
           revealAdjacentCells(row, col - 1); // Left
@@ -31,7 +31,7 @@ const MinesweeperGrid = ({ grid }) => {
       }
     };
 
-    if (grid[rowIndex][columnIndex] === ' ') {
+    if (grid[rowIndex][columnIndex] === '-' || grid[rowIndex][columnIndex] === ' ') {
       revealAdjacentCells(rowIndex, columnIndex);
     } else if (grid[rowIndex][columnIndex] === '*') {
       updatedCellStates[rowIndex][columnIndex] = '💣';
@@ -48,11 +48,12 @@ const MinesweeperGrid = ({ grid }) => {
     if (gameStatus !== 'playing') return;
 
     const updatedCellStates = [...cellStates];
+    const currentCellState = cellStates[rowIndex][columnIndex];
 
-    if (updatedCellStates[rowIndex][columnIndex] === '-') {
+    if (currentCellState === '🚩') {
+      updatedCellStates[rowIndex][columnIndex] = 'hidden';
+    } else if (currentCellState === 'hidden') {
       updatedCellStates[rowIndex][columnIndex] = '🚩';
-    } else if (updatedCellStates[rowIndex][columnIndex] === '🚩') {
-      updatedCellStates[rowIndex][columnIndex] = '-';
     }
 
     setCellStates(updatedCellStates);
@@ -63,7 +64,7 @@ const MinesweeperGrid = ({ grid }) => {
 
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[0].length; col++) {
-        if (grid[row][col] !== '*' && cellStates[row][col] === '-') {
+        if (grid[row][col] !== '*' && cellStates[row][col] === 'hidden') {
           allNonMineRevealed = false;
           break;
         }
