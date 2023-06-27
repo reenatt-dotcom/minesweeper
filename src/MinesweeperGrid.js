@@ -12,6 +12,14 @@ const MinesweeperGrid = ({ grid }) => {
   const handleClick = (rowIndex, columnIndex) => {
     if (gameStatus !== 'playing' || cellStates[rowIndex][columnIndex] === 'flagged') return;
 
+    if (grid[rowIndex][columnIndex] === '*') {
+      // Clicked on a bomb, reveal all cells
+      const updatedCellStates = grid.map((row) => row.map((cell) => cell));
+      setCellStates(updatedCellStates);
+      setGameStatus('lost');
+      return;
+    }
+
     const updatedCellStates = [...cellStates];
 
     const revealAdjacentCells = (row, col) => {
@@ -33,9 +41,6 @@ const MinesweeperGrid = ({ grid }) => {
 
     if (grid[rowIndex][columnIndex] === '-' || grid[rowIndex][columnIndex] === ' ') {
       revealAdjacentCells(rowIndex, columnIndex);
-    } else if (grid[rowIndex][columnIndex] === '*') {
-      updatedCellStates[rowIndex][columnIndex] = '💣';
-      setGameStatus('lost');
     } else {
       updatedCellStates[rowIndex][columnIndex] = grid[rowIndex][columnIndex];
     }
