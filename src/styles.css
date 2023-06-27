@@ -1,0 +1,14 @@
+.cell {
+    border: 1px outset blue;
+    background-color: lightBlue;
+    height:50px;
+    width:50px;
+    cursor:pointer;
+    outline: none;
+    white-space: nowrap;
+ }
+ 
+ .cell:hover {
+    background-color: blue;
+    color:white;
+ }
